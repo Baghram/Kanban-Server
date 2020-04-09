@@ -11,7 +11,6 @@ class Controller {
             include: ['Project']
         })
             .then(function(result) {
-                console.log(result)
                 return res.status(200).json(result)
             })
             .catch(function(err) {
@@ -25,7 +24,6 @@ class Controller {
             Title
         })
             .then(function(result) {
-                console.log(req.Authenticated)
                 return ProjectUser.create({
                     UserId: req.Authenticated.id,
                     ProjectId: result.id
@@ -41,9 +39,26 @@ class Controller {
             })
     }
 
+    static GetFriend(req, res, next) {
+        let {ProjectId} = req.body
+        ProjectUser.findAll({
+            where: {
+                ProjectId
+            },
+            include: ['User']
+        })
+            .then(function(result) {
+                return res.status(200).json(result)
+            })
+            .catch(function(err) {
+                console.log(err)
+                next(err)
+            })
+    }
+
     static AddFriend(req, res, next) {
         let {Email, ProjectId} = req.body
-        let UserId
+        let UserId;
         User.findOne({
             where: {
                 Email
@@ -66,7 +81,7 @@ class Controller {
                 }
             })
             .then(function(result) {
-                if(result !== null) {
+                if(result == null) {
                     return ProjectUser.create({
                         UserId,
                         ProjectId
@@ -78,7 +93,6 @@ class Controller {
                 }
             })
             .then(function(result) {
-                console.log(result)
                 return res.status(201).json({
                     msg: 'Succesfully Add Email'
                 })
@@ -100,6 +114,7 @@ class Controller {
             if(result !== null) {
                 return ProjectUser.destroy({
                     where: {
+                        ProjectId,
                         UserId: result.id
                     }
                 })
@@ -133,6 +148,7 @@ class Controller {
                 return res.status(200).json(result)
             })
             .catch(function(err) {
+                console.log(err)
                 next(err)
             })
 
@@ -156,7 +172,7 @@ class Controller {
     }
     
     static UpdateTask(req, res, next) {
-        let {Title, Category, Description, ProjectId} = req.body
+        let {Title, Category, Description, ProjectId } = req.body
         Task.findOne({
             where: {
                 id: req.params.id
@@ -194,7 +210,6 @@ class Controller {
     }
 
     static DeleteTask(req, res, next) {
-        let {Title, Category, Description, ProjectId} = req.body
         Task.findOne({
             where: {
                 id: req.params.id
@@ -215,7 +230,13 @@ class Controller {
                     throw err
                 }
             })
+            .then(function(result) {
+                return res.status(201).json({
+                    msg: 'Successfully Delete'
+                })
+            })
             .catch(function(err) {
+                console.log(err)
                 next(err)
             })
     }

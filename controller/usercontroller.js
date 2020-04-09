@@ -79,10 +79,10 @@ class UserController {
     }
 
     static googleLogin(req, res, next) {
+        console.log('MASUK GOOGLE LOGIN')
         let payload;
         let login;
         let token = req.headers.access_token
-        let geolocation
         let data
         let Access_Token
         const ticket = client.verifyIdToken({
@@ -127,8 +127,8 @@ class UserController {
                 Access_Token = jwt.sign(data, process.env.SECRET)
                     payload = {
                         Access_Token,
-                        Email: result.Email,
-                        geolocation: geolocation
+                        Email: result.Email
+                        
                     }
                     return res.status(200).json(payload)
             })
