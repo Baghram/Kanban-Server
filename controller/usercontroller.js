@@ -79,7 +79,6 @@ class UserController {
     }
 
     static googleLogin(req, res, next) {
-        console.log('MASUK GOOGLE LOGIN')
         let payload;
         let login;
         let token = req.headers.access_token

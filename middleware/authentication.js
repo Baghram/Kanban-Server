@@ -6,7 +6,6 @@ module.exports = function(req, res, next) {
 
     let Access_Token = req.headers.access_token
     let Authenticate = jwt.verify(Access_Token, process.env.SECRET)
-    console.log(Authenticate)
     User.findOne({
         where: {
             Email: Authenticate.Email

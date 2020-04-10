@@ -62,9 +62,6 @@ io.on('connection', function(socket) {
 
 
 app.use(errhandler)
-// app.listen(process.env.PORT, () => {
-//     console.log(`listening to port ${process.env.PORT}`)
-// })
 http.listen(process.env.PORT, () => {
     console.log(`listening to port ${process.env.PORT}`)
 })
