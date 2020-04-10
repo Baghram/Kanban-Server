@@ -57,6 +57,8 @@ class Controller {
     }
 
     static AddFriend(req, res, next) {
+        console.log('MASUK BACK END ADD FRIEND')
+        console.log(req.body)
         let {Email, ProjectId} = req.body
         let UserId;
         User.findOne({
@@ -65,11 +67,14 @@ class Controller {
             }
         })
             .then(function(result) {
+                // console.log(result)
                 if(result !== null) {
                     UserId = result.id
+                    // console.log(UserId)
                     return ProjectUser.findOne({
                         where: {
-                            UserId
+                            UserId,
+                            ProjectId
                         }
                     })
                 }
@@ -81,6 +86,7 @@ class Controller {
                 }
             })
             .then(function(result) {
+                // console.log(result)
                 if(result == null) {
                     return ProjectUser.create({
                         UserId,
@@ -90,14 +96,17 @@ class Controller {
                     let err = {
                         msg: 'Email Already Exist'
                     }
+                    throw err
                 }
             })
             .then(function(result) {
+                console.log(result)
                 return res.status(201).json({
                     msg: 'Succesfully Add Email'
                 })
             })
             .catch(function(err) {
+                console.log(err)
                 next(err)
             })
 

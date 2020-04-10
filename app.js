@@ -32,6 +32,19 @@ io.on('connection', function(socket) {
             socket.emit('rooms', rooms)
         })
     })
+    socket.on('task', function(msg) {
+        let message = 'Update Task EUY~'
+        io.emit('fetchtask', message)
+    })
+    socket.on('friend', function(msg) {
+        io.emit('updatefriend')
+    })
+    socket.on('deletefriend', function(msg) {
+        io.emit('deletefriend')
+    })
+    socket.on('checkfriend', function(msg) {
+        io.emit('checkfriend')
+    })
     socket.on('exit', function(msg) {
         socket.leave(msg.ProjectId)
     })
